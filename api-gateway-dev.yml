@@ -45,7 +45,14 @@ spring:
           uri: "lb://user-service"
           predicates:
             - "Path=/api/v1/auth/**"
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
 eureka:
   client:
     service-url:

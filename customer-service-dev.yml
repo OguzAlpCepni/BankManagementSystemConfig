@@ -3,6 +3,14 @@ spring:
     mongodb:
       uri: mongodb://root:root@mongo:27017/customers?authSource=admin
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
 eureka:
   client:
     service-url:

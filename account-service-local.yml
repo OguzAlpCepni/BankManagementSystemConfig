@@ -11,9 +11,14 @@ spring:
     hibernate:
       ddlAuto: update
 
-server:
-  port: 8010
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
 eureka:
   client:
     service-url:
