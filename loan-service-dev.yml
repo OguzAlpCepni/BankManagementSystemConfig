@@ -1,0 +1,47 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres5491:5491/loan
+    username: postgres
+    password: postgres
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    showSql: true
+    hibernate:
+      ddlAuto: update
+
+  cloud:
+    function:
+      definition: underwritingCompleted;underwritingRejected
+
+    stream:
+      defaultBinder: kafka
+      bindings:
+        loan-out-0:
+          destination: start-loan
+          content-type: application/json
+        underwritingCompleted-in-0:
+          destination: underwritingComplete-fraud
+          content-type: application/json
+          group: underwritingCompleted-group
+        underwritingRejected-in-0:
+          destination: underwritingRejected-fraud
+          content-type: application/json
+          group: underwritingRejected-group
+      kafka:
+        binder:
+          brokers: kafka:9092
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery-server:8888/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}

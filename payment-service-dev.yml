@@ -1,0 +1,45 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres5477:5477/payment
+    username: postgres
+    password: postgres
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    showSql: true
+    hibernate:
+      ddlAuto: update
+
+
+  cloud:
+    function:
+      definition: paymentStatusUpdateEventConsumer
+
+    stream:
+      defaultBinder: kafka
+      bindings:
+        paymentRequested-out-0:
+          destination: paymentstart-payment
+          content-type: application/json
+        paymentStatusUpdateEventConsumer-in-0:
+          destination: StatusUpdate-paymentstatus
+          content-type: application/json
+          group: paymentStatusUpdate-group
+      kafka:
+        binder:
+          brokers: kafka:9092
+
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery-server:8888/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}

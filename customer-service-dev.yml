@@ -1,0 +1,14 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://root:root@mongo:27017/customers?authSource=admin
+
+eureka:
+  client:
+    service-url:
+      defaultZone: "http://discovery-server:8888/eureka/"
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
